@@ -1,3 +1,4 @@
+import { CONFIG } from "@config";
 import { hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { Field, ObjectType } from "type-graphql";
@@ -49,7 +50,7 @@ export class User extends AbstractBaseEntity {
     const { lastName, firstName, username, password } = this;
     this.token = sign(
       { lastName, firstName, date: Date.now(), username },
-      process.env.JWT_SECRET
+      CONFIG.JWT_KEY
     );
 
     this.password = await hash(password, 4);

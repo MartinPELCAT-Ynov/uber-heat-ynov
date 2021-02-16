@@ -26,7 +26,8 @@
       "@components/*": ["components/*"],
       "@contexts/*": ["context/*"],
       "@icons/*": ["icons/*"],
-      "@generated": ["apollo/__generated__/"]
+      "@generated": ["apollo/__generated__/"],
+      "@config": ["server/config"]
     }
   },
   "exclude": ["dist", ".next", "out", "next.config.js"],
