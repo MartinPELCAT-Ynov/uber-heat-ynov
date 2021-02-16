@@ -1,0 +1,16 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "uberheat",
+  "synchronize": true,
+  "logging": "all",
+  "cache": true,
+  "dropSchema": "true",
+  "logger": "file",
+  "entities": ["server/src/entity/**/*.{ts,js}"],
+  "migrations": ["server/src/migration/**/*.{ts,js}"],
+  "subscribers": ["server/src/subscriber/**/*.{ts,js}"]
+}

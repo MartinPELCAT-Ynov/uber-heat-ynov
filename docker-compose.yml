@@ -1,0 +1,31 @@
+services:
+  postgres_database:
+    container_name: uber-heat-postgres
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: uberheat
+
+  # redis:
+  #   container_name: redis-cache
+  #   image: redis
+  #   ports:
+  #     - "6379:6379"
+
+  # nextjs:
+  #   ports:
+  #     - 3000:3000
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - /usr/src/app/
+  #     - /usr/src/app/node_modules
+  #     - /usr/src/app/.next
+  #   env_file:
+  #     - .env
+# docker-compose rm --all && docker-compose pull && docker-compose build --no-cache && docker-compose up -d --force-recreate
