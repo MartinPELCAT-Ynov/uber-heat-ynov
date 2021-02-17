@@ -14,13 +14,15 @@ export class AuthenticationResolver {
 
   @Mutation(() => User)
   async signUp(
-    @Arg("user") { firstName, lastName, password, username }: SignUpInput
+    @Arg("user") { firstName, name, password }: SignUpInput
   ): Promise<User> {
     const user = this.userRepository.create({
       firstName,
-      lastName,
+      name,
       password,
-      username,
+      company: "",
+      email: "",
+      locked: false,
     });
     return await user.save();
   }

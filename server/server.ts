@@ -5,7 +5,11 @@ import next from "next";
 import express from "express";
 import { createConnection, useContainer } from "typeorm";
 import Container from "typedi";
-import { AuthenticationResolver, RoomResolver, UserResolver } from "@resolvers";
+import {
+  AuthenticationResolver,
+  ProductResolver,
+  UserResolver,
+} from "@resolvers";
 import { seedsDataBase } from "./src/seeds";
 import { authChecker } from "./src/utils/AutenticationChecker";
 import cors from "cors";
@@ -39,7 +43,7 @@ export const server = async () => {
      * Typegraphql setup
      */
     const schema = await buildSchema({
-      resolvers: [UserResolver, AuthenticationResolver, RoomResolver],
+      resolvers: [AuthenticationResolver, UserResolver, ProductResolver],
       container: Container,
       authChecker,
     });

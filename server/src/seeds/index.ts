@@ -1,23 +1,7 @@
-import { User } from "../entity/User";
 import { getRepository } from "typeorm";
-import { Role } from "../entity/UseRole";
+import { Product } from "@entity/Product";
+import { User } from "@entity/User";
 export const seedsDataBase = async () => {
-  /**
-   * Add roles
-   */
-  const roleRepository = getRepository(Role);
-
-  const roles = roleRepository.create([
-    { name: "STUDENT" },
-    { name: "ADMIN" },
-    { name: "TEACHER" },
-  ]);
-
-  const addedRoles = await roleRepository.save(roles);
-
-
-
-
   /**
    * Add Users
    */
@@ -25,11 +9,32 @@ export const seedsDataBase = async () => {
 
   const user = userRepository.create({
     firstName: "Martin",
-    lastName: "PELCAT",
-    username: "pelcatm",
+    name: "PELCAT",
     password: "hophop",
-    roles: addedRoles,
+    company: "JonquilleLand",
+    locked: false,
+    email: "martin.pelcat@ynov.com",
+  });
+  await userRepository.save(user);
+
+  const productRepository = getRepository(Product);
+
+  const product = productRepository.create({
+    basePrice: 600,
+    rectConfigurations: [
+      {
+        db10: 10,
+        db1: 1,
+        db2: 2,
+        db5: 5,
+        depth: 123,
+        width: 1234,
+        height: 1111,
+        thickness: 2,
+      },
+    ],
+    name: "Nouveau Produit",
   });
 
-  await userRepository.save(user);
+  await productRepository.save(product);
 };

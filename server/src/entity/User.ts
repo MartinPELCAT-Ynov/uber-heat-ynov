@@ -1,49 +1,52 @@
 import { hash } from "bcrypt";
+import { IsEmail } from "class-validator";
 import { Field, ObjectType } from "type-graphql";
 import {
   Entity,
   Column,
-  ManyToMany,
-  Index,
   BeforeInsert,
-  JoinTable,
+  PrimaryGeneratedColumn,
+  BaseEntity,
 } from "typeorm";
-import { Lazy } from "../types/types";
-import AbstractBaseEntity from "./AbstractBaseEntity";
-import { Group } from "./Group";
-import { Role } from "./UseRole";
 
 @Entity()
-@ObjectType({ description: "General database" })
-export class User extends AbstractBaseEntity {
+@ObjectType()
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn("uuid")
+  @Field()
+  id?: string;
+
+  @Column()
+  @Field()
+  name!: string;
+
   @Column()
   @Field()
   firstName!: string;
 
-  @Column()
-  @Field()
-  lastName!: string;
-
   @Column({ unique: true })
-  @Index()
+  @IsEmail()
   @Field()
-  username!: string;
+  email!: string;
+
+  @Column({ nullable: true })
+  @Field()
+  company?: string;
+
+  @Column("bool", { default: true })
+  @Field()
+  locked!: boolean;
+
+  @Column("character varying", { array: true, nullable: true })
+  @Field(() => [String])
+  roles?: string[];
 
   @Column()
   password!: string;
 
-  @ManyToMany(() => Role, { lazy: true })
-  @JoinTable()
-  @Field(() => [String], { nullable: true })
-  roles?: Lazy<Role[]>;
-
-  @ManyToMany(() => Group)
-  groups: Group[];
-
   @BeforeInsert()
   async beforeInset() {
     const { password } = this;
-
     this.password = await hash(password, 4);
   }
 }

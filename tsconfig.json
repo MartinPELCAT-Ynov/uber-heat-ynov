@@ -30,7 +30,8 @@
       "@config": ["server/config"],
       "@entity/*": ["server/src/entity/*"],
       "@resolvers": ["server/src/resolvers"],
-      "@input/*": ["server/src/inputs/*"]
+      "@input/*": ["server/src/inputs/*"],
+      "@middlewares/*": ["middlewares/*"]
     }
   },
   "exclude": ["dist", ".next", "out", "next.config.js"],

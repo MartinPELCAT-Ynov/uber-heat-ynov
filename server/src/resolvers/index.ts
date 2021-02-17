@@ -1,3 +1,3 @@
 export * from "./AuthenticationResolver";
-export * from "./RoomResolver";
 export * from "./UserResolver";
+export * from "./ProductResolver";
