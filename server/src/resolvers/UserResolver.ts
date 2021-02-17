@@ -1,8 +1,9 @@
-import { Arg, FieldResolver, Query, Resolver, Root } from "type-graphql";
+import { Arg, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { User } from "../entity/User";
+import { ContextType } from "../types/ContextType";
 
 @Service()
 @Resolver(() => User)
@@ -20,8 +21,11 @@ export default class UserResolver {
   }
 
   @Query(() => [User])
-  async users() {
-    return this.userRepository.find();
+  async users(@Ctx() ctx: ContextType) {
+    console.log("Session > ", ctx.req.session.user);
+    const users = await this.userRepository.find();
+    ctx.req.session.user = users[0];
+    return users;
   }
 
   @FieldResolver()

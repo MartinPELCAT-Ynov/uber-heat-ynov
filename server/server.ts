@@ -11,12 +11,18 @@ import RoomResolver from "./src/resolvers/RoomResolver";
 import { seedsDataBase } from "./src/seeds";
 import { authChecker } from "./src/utils/AutenticationChecker";
 import cors from "cors";
-import { ContextType } from "./src/types/ContextType";
+import session from "express-session";
+import { CONFIG } from "@config";
+import connectRedis from "connect-redis";
+import Redis from "ioredis";
+import cookieParser from "cookie-parser";
 
 const nextApp = next({ dev: true });
 const handler = nextApp.getRequestHandler();
 useContainer(Container);
 const PORT = 3000;
+
+const RedisStore = connectRedis(session);
 
 export const server = async () => {
   return nextApp.prepare().then(async () => {
@@ -39,17 +45,31 @@ export const server = async () => {
       container: Container,
       authChecker,
     });
-
+    app.use(cookieParser());
     app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+    // app.set("trust proxy", 1); // trust first proxy
+
+    app.use(
+      session({
+        store: new RedisStore({ client: new Redis() }),
+        secret: CONFIG.SESSION_KEY,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: 4.32e8,
+        },
+      })
+    );
 
     const apollo = new ApolloServer({
       schema,
-      context: async ({ req, res }): Promise<ContextType> => {
-        return { res, req };
-      },
+      playground: { settings: { "request.credentials": "same-origin" } }, // to test with cookie in playground
+      context: async ({ req, res }) => ({ res, req }),
     });
+    apollo.applyMiddleware({ path: "/api/gql", app, cors: false });
 
-    apollo.applyMiddleware({ path: "/api/gql", app, cors: true });
     app.all("*", (req, res) => {
       handler(req, res);
     }); // use page folder
