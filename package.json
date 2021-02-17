@@ -22,7 +22,6 @@
     "express-session": "^1.17.1",
     "graphql": "^15.5.0",
     "ioredis": "^4.22.0",
-    "jsonwebtoken": "^8.5.1",
     "next": "10.0.7",
     "pg": "^8.5.1",
     "postcss": "^8.2.6",

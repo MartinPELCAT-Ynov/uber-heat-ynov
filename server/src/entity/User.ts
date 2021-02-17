@@ -1,6 +1,4 @@
-import { CONFIG } from "@config";
 import { hash } from "bcrypt";
-import { sign } from "jsonwebtoken";
 import { Field, ObjectType } from "type-graphql";
 import {
   Entity,
@@ -34,9 +32,6 @@ export class User extends AbstractBaseEntity {
   @Column()
   password!: string;
 
-  @Column({ unique: true })
-  token: string;
-
   @ManyToMany(() => Role, { lazy: true })
   @JoinTable()
   @Field(() => [String], { nullable: true })
@@ -47,11 +42,7 @@ export class User extends AbstractBaseEntity {
 
   @BeforeInsert()
   async beforeInset() {
-    const { lastName, firstName, username, password } = this;
-    this.token = sign(
-      { lastName, firstName, date: Date.now(), username },
-      CONFIG.JWT_KEY
-    );
+    const { password } = this;
 
     this.password = await hash(password, 4);
   }

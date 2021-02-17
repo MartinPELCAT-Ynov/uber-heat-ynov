@@ -27,7 +27,10 @@
       "@contexts/*": ["context/*"],
       "@icons/*": ["icons/*"],
       "@generated": ["apollo/__generated__/"],
-      "@config": ["server/config"]
+      "@config": ["server/config"],
+      "@entity/*": ["server/src/entity/*"],
+      "@resolvers": ["server/src/resolvers"],
+      "@input/*": ["server/src/inputs/*"]
     }
   },
   "exclude": ["dist", ".next", "out", "next.config.js"],

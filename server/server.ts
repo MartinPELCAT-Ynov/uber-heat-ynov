@@ -5,9 +5,7 @@ import next from "next";
 import express from "express";
 import { createConnection, useContainer } from "typeorm";
 import Container from "typedi";
-import AuthenticationResolver from "./src/resolvers/AuthenticationResolver";
-import UserResolver from "./src/resolvers/UserResolver";
-import RoomResolver from "./src/resolvers/RoomResolver";
+import { AuthenticationResolver, RoomResolver, UserResolver } from "@resolvers";
 import { seedsDataBase } from "./src/seeds";
 import { authChecker } from "./src/utils/AutenticationChecker";
 import cors from "cors";
@@ -54,7 +52,7 @@ export const server = async () => {
         store: new RedisStore({ client: new Redis() }),
         secret: CONFIG.SESSION_KEY,
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         cookie: {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",

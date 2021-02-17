@@ -1,12 +1,12 @@
+import { Room } from "@entity/Room";
 import { Arg, Query, Resolver } from "type-graphql";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { Room } from "../entity/Room";
 
 @Service()
 @Resolver()
-export default class RoomResolver {
+export class RoomResolver {
   constructor(
     @InjectRepository(Room) private readonly roomRepository: Repository<Room>
   ) {}

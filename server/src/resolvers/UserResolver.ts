@@ -1,13 +1,13 @@
+import { User } from "@entity/User";
 import { Arg, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import { User } from "../entity/User";
 import { ContextType } from "../types/ContextType";
 
 @Service()
 @Resolver(() => User)
-export default class UserResolver {
+export class UserResolver {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
