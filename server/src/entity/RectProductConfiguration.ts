@@ -1,11 +1,11 @@
 import { Field, ObjectType } from "type-graphql";
 import { Column, Entity, ManyToOne } from "typeorm";
+import { IProductConfiguration } from "../interfaces/IProductConfiguration";
 import { Product } from "./Product";
-import { ProductConfiguration } from "./ProductConfiguration";
 
-@ObjectType({ implements: ProductConfiguration })
+@ObjectType({ implements: IProductConfiguration })
 @Entity()
-export class RectProductConfiguration extends ProductConfiguration {
+export class RectProductConfiguration extends IProductConfiguration {
   @Column("double precision")
   @Field()
   width: number;
@@ -23,8 +23,7 @@ export class RectProductConfiguration extends ProductConfiguration {
   })
   product: Product;
 
-  @Field()
-  getSurface(): number {
+  surface() {
     return this.width * this.height;
   }
 }

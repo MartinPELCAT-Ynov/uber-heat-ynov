@@ -1,8 +1,8 @@
 import { Field, InterfaceType } from "type-graphql";
-import { BaseEntity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column } from "typeorm";
 
 @InterfaceType()
-export abstract class ProductConfiguration extends BaseEntity {
+export abstract class IProductConfiguration {
   @PrimaryGeneratedColumn("uuid")
   @Field()
   id: string;
@@ -27,5 +27,8 @@ export abstract class ProductConfiguration extends BaseEntity {
   @Field()
   db10: number;
 
-  abstract getSurface(): number;
+  @Field()
+  surface(): number {
+    throw new Error("Method not implemented!");
+  }
 }

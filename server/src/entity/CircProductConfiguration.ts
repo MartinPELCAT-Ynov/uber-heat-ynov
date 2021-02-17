@@ -1,11 +1,11 @@
 import { Field, ObjectType } from "type-graphql";
 import { Column, Entity, ManyToOne } from "typeorm";
+import { IProductConfiguration } from "../interfaces/IProductConfiguration";
 import { Product } from "./Product";
-import { ProductConfiguration } from "./ProductConfiguration";
 
 @Entity()
-@ObjectType({ implements: ProductConfiguration })
-export class CircProductConfiguration extends ProductConfiguration {
+@ObjectType({ implements: IProductConfiguration })
+export class CircProductConfiguration extends IProductConfiguration {
   @Column("double precision")
   @Field()
   diameter: number;
@@ -15,8 +15,7 @@ export class CircProductConfiguration extends ProductConfiguration {
   })
   product: Product;
 
-  @Field()
-  getSurface(): number {
+  surface() {
     return Math.PI * Math.pow(this.diameter / 2, 2);
   }
 }
