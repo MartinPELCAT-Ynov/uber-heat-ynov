@@ -33,6 +33,16 @@ export const seedsDataBase = async () => {
         thickness: 2,
       },
     ],
+    circConfigurations: [
+      {
+        db10: 10,
+        db1: 1,
+        db2: 2,
+        db5: 5,
+        depth: 123,
+        diameter: 33,
+      },
+    ],
     name: "Nouveau Produit",
   });
 

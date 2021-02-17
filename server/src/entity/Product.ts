@@ -7,6 +7,7 @@ import {
   Entity,
 } from "typeorm";
 import { Lazy } from "../types/types";
+// import { ProductConfigurationUnionType } from "../unions/ProductConfigurationUnion";
 import { CircProductConfiguration } from "./CircProductConfiguration";
 import { RectProductConfiguration } from "./RectProductConfiguration";
 
@@ -29,13 +30,11 @@ export class Product extends BaseEntity {
     lazy: true,
     cascade: ["insert"],
   })
-  @Field(() => [RectProductConfiguration])
   rectConfigurations: Lazy<RectProductConfiguration[]>;
 
   @OneToMany(() => CircProductConfiguration, (prodC) => prodC.product, {
     lazy: true,
     cascade: ["insert"],
   })
-  @Field(() => [CircProductConfiguration])
   circConfigurations: Lazy<CircProductConfiguration[]>;
 }
