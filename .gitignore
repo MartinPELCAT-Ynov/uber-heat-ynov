@@ -14,7 +14,8 @@
 
 # production
 /build
-/server/upload
+/server/upload/*
+!/server/upload/products.csv
 
 
 # misc
