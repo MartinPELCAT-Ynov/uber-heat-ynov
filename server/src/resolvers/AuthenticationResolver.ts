@@ -5,8 +5,10 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { SignInInput, SignUpInput } from "../inputs/User";
 import { ContextType } from "../types/ContextType";
 import { User } from "@entity/User";
+import { Service } from "typedi";
 
 @Resolver()
+@Service()
 export class AuthenticationResolver {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>

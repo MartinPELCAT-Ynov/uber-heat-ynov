@@ -1,7 +1,15 @@
 import { CircProductConfiguration } from "@entity/CircProductConfiguration";
 import { Product } from "@entity/Product";
 import { RectProductConfiguration } from "@entity/RectProductConfiguration";
-import { FieldResolver, Query, Resolver } from "type-graphql";
+import { CreateProductInput } from "@input/ProductInput";
+import {
+  Arg,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+} from "type-graphql";
 import { Service } from "typedi";
 import { ProductConfigurationUnion } from "../unions/ProductConfigurationUnion";
 
@@ -14,9 +22,23 @@ export class ProductResolver {
   }
 
   @FieldResolver(() => [ProductConfigurationUnion])
-  async configurations() {
-    const circProducts = await CircProductConfiguration.find();
-    const rectProducts = await RectProductConfiguration.find();
+  async configurations(@Root() { id }: Product) {
+    const circProducts = await CircProductConfiguration.find({
+      where: { product: id },
+    });
+    const rectProducts = await RectProductConfiguration.find({
+      where: { product: id },
+    });
     return [...circProducts, ...rectProducts];
+  }
+
+  @Mutation(() => Product)
+  async addProduct(
+    @Arg("data")
+    { basePrice, name, ...rest }: CreateProductInput
+  ) {
+    console.log(basePrice, rest, name);
+
+    return Product.findOne();
   }
 }

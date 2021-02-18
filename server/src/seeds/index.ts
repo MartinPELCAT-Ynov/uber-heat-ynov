@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
-import { Product } from "@entity/Product";
 import { User } from "@entity/User";
+import { CsvImportService } from "../services/CsvImportService";
+import { join } from "path";
 export const seedsDataBase = async () => {
   /**
    * Add Users
@@ -17,34 +18,8 @@ export const seedsDataBase = async () => {
   });
   await userRepository.save(user);
 
-  const productRepository = getRepository(Product);
-
-  const product = productRepository.create({
-    basePrice: 600,
-    rectConfigurations: [
-      {
-        db10: 10,
-        db1: 1,
-        db2: 2,
-        db5: 5,
-        depth: 123,
-        width: 1234,
-        height: 1111,
-        thickness: 2,
-      },
-    ],
-    circConfigurations: [
-      {
-        db10: 10,
-        db1: 1,
-        db2: 2,
-        db5: 5,
-        depth: 123,
-        diameter: 33,
-      },
-    ],
-    name: "Nouveau Produit",
-  });
-
-  await productRepository.save(product);
+  const csvImportService = new CsvImportService();
+  await csvImportService.importCsvProduct(
+    join(__dirname, "../../upload/products.csv")
+  );
 };

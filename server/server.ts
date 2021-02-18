@@ -67,7 +67,12 @@ export const server = async () => {
 
     const apollo = new ApolloServer({
       schema,
-      playground: { settings: { "request.credentials": "same-origin" } }, // to test with cookie in playground
+      playground: {
+        settings: {
+          "request.credentials": "same-origin",
+          "editor.theme": "light",
+        },
+      }, // to test with cookie in playground
       context: async ({ req, res }) => ({ res, req }),
     });
     apollo.applyMiddleware({ path: "/api/gql", app, cors: false });
