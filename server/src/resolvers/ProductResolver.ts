@@ -2,6 +2,10 @@ import { CircProductConfiguration } from "@entity/CircProductConfiguration";
 import { Product } from "@entity/Product";
 import { RectProductConfiguration } from "@entity/RectProductConfiguration";
 import { CreateProductInput } from "@input/ProductInput";
+import { GraphQLUpload } from "apollo-server-express";
+import { join } from "path";
+import { createWriteStream } from "fs";
+
 import {
   Arg,
   FieldResolver,
@@ -11,6 +15,7 @@ import {
   Root,
 } from "type-graphql";
 import { Service } from "typedi";
+import { FileScalar, FileType } from "../scalars/FileScalar";
 import { ProductConfigurationUnion } from "../unions/ProductConfigurationUnion";
 
 @Service()
@@ -40,5 +45,21 @@ export class ProductResolver {
     console.log(basePrice, rest, name);
 
     return Product.findOne();
+  }
+
+  @Mutation(() => FileScalar)
+  async importProductsFromCsv(
+    @Arg("file", () => GraphQLUpload) file: Promise<FileType>
+  ) {
+    const { createReadStream, filename } = await file;
+    const path = join(__dirname, "../../upload/", filename);
+    const stream = createReadStream();
+    await new Promise((res, rej) => {
+      stream
+        .pipe(createWriteStream(path))
+        .on("finish", () => res(true))
+        .on("error", rej);
+    });
+    return file;
   }
 }
