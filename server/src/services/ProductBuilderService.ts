@@ -66,17 +66,21 @@ export class ProductBuilderService {
   }
 
   async addConfigToProduct(csvRow: CSVRowType, product: Product) {
-    switch (csvRow.Type) {
-      case "Circulaire":
-        await this.createCircleConfig(csvRow, product);
-        break;
+    try {
+      switch (csvRow.Type) {
+        case "Circulaire":
+          await this.createCircleConfig(csvRow, product);
+          break;
 
-      case "Rectangulaire":
-        await this.createRectConfig(csvRow, product);
+        case "Rectangulaire":
+          await this.createRectConfig(csvRow, product);
 
-        break;
-      default:
-        break;
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      //Dont do shit
     }
   }
 

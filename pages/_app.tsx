@@ -4,10 +4,12 @@ import { AppProps } from "next/dist/next-server/lib/router/router";
 import { createUploadLink } from "apollo-upload-client";
 import "tailwindcss/tailwind.css";
 
+const GRAPHQL_ENDPOINT = "http://localhost:3000/api/gql";
+
 const client = new ApolloClient({
-  uri: "http://localhost:3000/api/gql",
+  uri: GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
-  link: createUploadLink({ uri: "http://localhost:3000/api/gql" }),
+  link: createUploadLink({ uri: GRAPHQL_ENDPOINT }),
 });
 
 const App = ({ Component, pageProps }: AppProps) => {

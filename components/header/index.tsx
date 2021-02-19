@@ -15,7 +15,11 @@ export const Header = () => {
 
   return (
     <div className="bg-gray-100 px-8 flex justify-between items-center font-medium">
-      <div className="text-2xl py-4">UberHeat</div>
+      <Link href="/">
+        <a>
+          <div className="text-2xl py-4">UberHeat</div>
+        </a>
+      </Link>
       <div ref={menuRef} className="relative">
         <button
           onClick={() => setMenuOpened((prevState) => !prevState)}
@@ -24,7 +28,7 @@ export const Header = () => {
             "focus:outline-none flex items-center space-x-6 hover:bg-indigo-400 hover:text-white py-1 pl-6 pr-1 rounded-full"
           )}
         >
-          <span>{user.firstName}</span>
+          <span className="text-lg">{user.firstName}</span>
           <div className="bg-indigo-300 h-10 w-10 rounded-full flex justify-center items-center">
             <span className="">{user.firstName.slice(0, 1)}</span>
           </div>
