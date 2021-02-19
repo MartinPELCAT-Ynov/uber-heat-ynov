@@ -9,6 +9,7 @@ import {
   AuthenticationResolver,
   ProductResolver,
   UserResolver,
+  ResulResolver,
 } from "./src/resolvers";
 import { seedsDataBase } from "./src/seeds";
 import { authChecker } from "./src/utils/AutenticationChecker";
@@ -43,7 +44,12 @@ export const server = async () => {
      * Typegraphql setup
      */
     const schema = await buildSchema({
-      resolvers: [AuthenticationResolver, UserResolver, ProductResolver],
+      resolvers: [
+        AuthenticationResolver,
+        UserResolver,
+        ProductResolver,
+        ResulResolver,
+      ],
       container: Container,
       authChecker,
     });

@@ -1,11 +1,12 @@
 import { Layout } from "@components/layouts";
-import { withSession } from "../../middlewares/withSession";
+import { redirectPath, withSession } from "../../middlewares/withSession";
 import { GetServerSideProps } from "next";
 import { useForm } from "react-hook-form";
 import { useImportProductFromCsvMutation } from "@generated";
 import { Spinner } from "@components/Spinner";
 import { useState } from "react";
 import clsx from "clsx";
+import { UserRole } from "server/src/enums/UserRole";
 
 const DashBoard = () => {
   const { register, handleSubmit } = useForm<{ file: FileList }>();
@@ -70,6 +71,7 @@ export default DashBoard;
 
 export const getServerSideProps: GetServerSideProps = withSession(
   async (_, user) => {
+    if (user.role !== UserRole.ADMIN) return redirectPath("/");
     return { props: { user } };
   }
 );

@@ -5,6 +5,7 @@ import { useClickAway } from "react-use";
 import Link from "next/link";
 import { useLogOutMutation } from "apollo/__generated__";
 import { useRouter } from "next/router";
+import { UserRole } from "server/src/enums/UserRole";
 
 export const Header = () => {
   const { user } = useContext(SessionContext);
@@ -43,18 +44,22 @@ export const Header = () => {
 
 type HeaderDropDownProps = { open: boolean };
 const HeaderDropDown = ({ open }: HeaderDropDownProps) => {
+  const { user } = useContext(SessionContext);
   return (
     <div
       className={clsx(!open && "hidden", "absolute right-0 top-14 text-left")}
     >
       <div className="bg-indigo-400 p-2 text-white rounded-md">
-        <Link href="/admin/dashboard">
-          <a>
-            <div className="hover:bg-indigo-300 px-4 py-2 rounded-md">
-              Administration
-            </div>
-          </a>
-        </Link>
+        {user.role === UserRole.ADMIN && (
+          <Link href="/admin/dashboard">
+            <a>
+              <div className="hover:bg-indigo-300 px-4 py-2 rounded-md">
+                Administration
+              </div>
+            </a>
+          </Link>
+        )}
+
         <LogOutButton />
       </div>
     </div>

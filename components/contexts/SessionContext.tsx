@@ -1,9 +1,9 @@
-import { User } from "@entity/User";
 import React, { createContext, FC } from "react";
+import { User } from "server/src/entity/User";
 
 export type ContextSessionUser = Pick<
   User,
-  "id" | "name" | "firstName" | "email" | "company" | "locked" | "roles"
+  "id" | "name" | "firstName" | "email" | "company" | "locked" | "role"
 >;
 
 type SessionContextType = {
