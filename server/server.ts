@@ -61,6 +61,7 @@ export const server = async () => {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           maxAge: 4.32e8,
+          sameSite: true,
         },
       })
     );

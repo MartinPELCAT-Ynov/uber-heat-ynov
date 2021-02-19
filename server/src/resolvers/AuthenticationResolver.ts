@@ -29,15 +29,16 @@ export class AuthenticationResolver {
     return await user.save();
   }
 
-  @Query(() => User)
+  @Mutation(() => User)
   async signIn(
-    @Arg("user") { password, username }: SignInInput,
+    @Arg("user") { password, email }: SignInInput,
     @Ctx() { req }: ContextType
   ): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { username } });
+    const user = await this.userRepository.findOne({ where: { email } });
     if (user) {
       const match = await compare(password, user.password);
       if (match) {
+        delete user.password;
         req.session.user = user;
         return user;
       }
@@ -48,9 +49,7 @@ export class AuthenticationResolver {
   }
 
   @Query(() => User, { nullable: true })
-  async getUserFromToken(@Arg("token", () => String) token: string) {
-    return await this.userRepository.findOne({
-      where: { token },
-    });
+  async Me(@Ctx() { req }: ContextType) {
+    return await this.userRepository.findOne(req.session.user.id);
   }
 }

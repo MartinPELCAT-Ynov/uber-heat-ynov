@@ -16,7 +16,7 @@ export class SignUpInput implements Partial<User> {
 @InputType()
 export class SignInInput implements Partial<User> {
   @Field()
-  username: string;
+  email: string;
 
   @Field()
   password: string;

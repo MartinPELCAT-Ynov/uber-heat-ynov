@@ -1,0 +1,7 @@
+mutation importProductFromCsv($file: Upload!) {
+  importProductsFromCsv(file: $file) {
+    filename
+    mimetype
+    encoding
+  }
+}

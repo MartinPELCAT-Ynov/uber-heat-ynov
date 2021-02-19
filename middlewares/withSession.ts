@@ -10,7 +10,7 @@ export const getConnectedUser = ({ req }: ContextType): User | null => {
   return req.session.user || null;
 };
 
-export const withAuthentication = <
+export const withSession = <
   P extends { [key: string]: unknown } = { [key: string]: unknown },
   Q extends ParsedUrlQuery = ParsedUrlQuery
 >(
@@ -35,8 +35,8 @@ const redirectPath = (
     redirect: {
       destination:
         redirectUrl === "/"
-          ? "/auth/login"
-          : `/auth/login?redirect_to=${encodeURIComponent(redirectUrl)}`,
+          ? "/auth/signin"
+          : `/auth/signin?redirect_to=${encodeURIComponent(redirectUrl)}`,
       permanent: false,
     },
   };
