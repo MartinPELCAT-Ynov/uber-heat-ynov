@@ -1,7 +1,5 @@
 import { getRepository } from "typeorm";
 import { User } from "@entity/User";
-import { CsvImportService } from "../services/CsvImportService";
-import { join } from "path";
 export const seedsDataBase = async () => {
   /**
    * Add Users
@@ -17,9 +15,4 @@ export const seedsDataBase = async () => {
     email: "martin.pelcat@ynov.com",
   });
   await userRepository.save(user);
-
-  const csvImportService = new CsvImportService();
-  await csvImportService.importCsvProduct(
-    join(__dirname, "../../upload/products.csv")
-  );
 };

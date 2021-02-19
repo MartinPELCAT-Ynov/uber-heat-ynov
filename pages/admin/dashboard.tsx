@@ -7,12 +7,12 @@ import { useImportProductFromCsvMutation } from "@generated";
 const DashBoard = () => {
   const { register, handleSubmit } = useForm<{ file: FileList }>();
 
-  const [mutation] = useImportProductFromCsvMutation();
+  const [importProductMutation] = useImportProductFromCsvMutation();
 
   const onSubmit = handleSubmit((values) => {
     try {
       const file = values.file[0];
-      mutation({ variables: { file } });
+      importProductMutation({ variables: { file } });
     } catch (error) {
       console.log(error);
     }

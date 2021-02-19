@@ -17,10 +17,13 @@ import {
 import { Service } from "typedi";
 import { FileScalar, FileType } from "../scalars/FileScalar";
 import { ProductConfigurationUnion } from "../unions/ProductConfigurationUnion";
+import { CsvImportService } from "../services/CsvImportService";
 
 @Service()
 @Resolver(() => Product)
 export class ProductResolver {
+  constructor(private readonly csvImportService: CsvImportService) {}
+
   @Query(() => [Product])
   async products() {
     return Product.find();
@@ -60,6 +63,8 @@ export class ProductResolver {
         .on("finish", () => res(true))
         .on("error", rej);
     });
+
+    await this.csvImportService.importCsvProduct(path);
     return file;
   }
 }

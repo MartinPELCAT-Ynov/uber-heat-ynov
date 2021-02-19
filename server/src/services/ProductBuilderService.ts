@@ -1,11 +1,13 @@
 import { CircProductConfiguration } from "@entity/CircProductConfiguration";
 import { Product } from "@entity/Product";
 import { RectProductConfiguration } from "@entity/RectProductConfiguration";
+import Joi from "joi";
+import { Service } from "typedi";
 import { getRepository } from "typeorm";
 
 type ProductType = "Rectangulaire" | "Circulaire";
 
-type CSVRowType = {
+export type CSVRowType = {
   Type: ProductType;
   Article: string;
   Largeur: string;
@@ -19,12 +21,30 @@ type CSVRowType = {
   "1m": string;
 };
 
+export const CSVRowTypeSchema = Joi.object<CSVRowType>({
+  Type: Joi.string().required(),
+  Article: Joi.string().required(),
+  Largeur: Joi.string().allow(""),
+  Hauteur: Joi.string().allow(""),
+  Epaisseur: Joi.string().allow(""),
+  Profondeur: Joi.string().required(),
+  Diametre: Joi.string().allow(""),
+  "10m": Joi.string().required(),
+  "5m": Joi.string().required(),
+  "2m": Joi.string().required(),
+  "1m": Joi.string().required(),
+});
+
 const csvParseNumber = (value: string) => {
   return parseFloat(value.replace(/,/, "."));
 };
 
+@Service()
 export class ProductBuilderService {
   async addProduct(csvRow: CSVRowType) {
+    const { error } = CSVRowTypeSchema.validate(csvRow);
+    if (error) return console.log("Fail Format");
+
     const product = await Product.findOne({
       where: { name: csvRow.Article },
     });

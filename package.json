@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon --ignore 'server/upload'",
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "generate:hook": "graphql-codegen --config codegen.yml",
@@ -26,6 +26,7 @@
     "express-session": "^1.17.1",
     "graphql": "^15.5.0",
     "ioredis": "^4.22.0",
+    "joi": "^17.4.0",
     "next": "10.0.7",
     "pg": "^8.5.1",
     "postcss": "^8.2.6",
