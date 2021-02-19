@@ -1,10 +1,11 @@
 import { Layout } from "@components/layouts";
-import { withSession } from "@middlewares/withSession";
+import { withSession } from "../../middlewares/withSession";
 import { GetServerSideProps } from "next";
 import { useForm } from "react-hook-form";
 import { useImportProductFromCsvMutation } from "@generated";
 import { Spinner } from "@components/Spinner";
 import { useState } from "react";
+import clsx from "clsx";
 
 const DashBoard = () => {
   const { register, handleSubmit } = useForm<{ file: FileList }>();
@@ -15,10 +16,10 @@ const DashBoard = () => {
     { called, loading },
   ] = useImportProductFromCsvMutation();
 
-  const onSubmit = handleSubmit((values) => {
+  const onSubmit = handleSubmit(async (values) => {
     try {
       const file = values.file[0];
-      importProductMutation({ variables: { file } });
+      await importProductMutation({ variables: { file } });
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +51,11 @@ const DashBoard = () => {
           </div>
           <button
             type="submit"
-            className="flex bg-green-400 text-white font-bold py-2 px-4 rounded-md items-center"
+            disabled={!file}
+            className={clsx(
+              !file && "bg-opacity-50",
+              "flex bg-green-400 text-white font-bold py-2 px-4 rounded-md items-center"
+            )}
           >
             {called && loading && <Spinner />}
             <div>Valider</div>

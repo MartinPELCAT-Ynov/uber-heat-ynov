@@ -4,6 +4,10 @@ mutation SignIn($inputs: SignInInput!) {
   }
 }
 
+mutation LogOut {
+  logout
+}
+
 fragment UserFields on User {
   name
   firstName

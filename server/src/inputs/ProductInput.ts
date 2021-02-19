@@ -1,7 +1,7 @@
-import { CircProductConfiguration } from "@entity/CircProductConfiguration";
-import { Product } from "@entity/Product";
-import { ProductConfiguration } from "@entity/ProductConfiguration";
-import { RectProductConfiguration } from "@entity/RectProductConfiguration";
+import { CircProductConfiguration } from "../entity/CircProductConfiguration";
+import { Product } from "../entity/Product";
+import { ProductConfiguration } from "../entity/ProductConfiguration";
+import { RectProductConfiguration } from "../entity/RectProductConfiguration";
 import { Field, InputType } from "type-graphql";
 
 @InputType()

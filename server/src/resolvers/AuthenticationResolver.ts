@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { SignInInput, SignUpInput } from "../inputs/User";
 import { ContextType } from "../types/ContextType";
-import { User } from "@entity/User";
+import { User } from "../entity/User";
 import { Service } from "typedi";
 
 @Resolver()
@@ -46,6 +46,19 @@ export class AuthenticationResolver {
     } else {
       throw new Error("No user found");
     }
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { req }: ContextType): Promise<boolean> {
+    return await new Promise((res, rej) => {
+      try {
+        req.session.destroy(() => {
+          res(true);
+        });
+      } catch (error) {
+        rej(error);
+      }
+    });
   }
 
   @Query(() => User, { nullable: true })

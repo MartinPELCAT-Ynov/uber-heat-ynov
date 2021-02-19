@@ -3,6 +3,8 @@ import clsx from "clsx";
 import { useContext, useRef, useState } from "react";
 import { useClickAway } from "react-use";
 import Link from "next/link";
+import { useLogOutMutation } from "apollo/__generated__";
+import { useRouter } from "next/router";
 
 export const Header = () => {
   const { user } = useContext(SessionContext);
@@ -53,10 +55,32 @@ const HeaderDropDown = ({ open }: HeaderDropDownProps) => {
             </div>
           </a>
         </Link>
-        <div role="button" className="hover:bg-indigo-300 px-4 py-2 rounded-md">
-          Deconnexion
-        </div>
+        <LogOutButton />
       </div>
+    </div>
+  );
+};
+
+export const LogOutButton = () => {
+  const [logOut] = useLogOutMutation();
+  const { push } = useRouter();
+
+  const handleLogOut = async () => {
+    try {
+      await logOut();
+      push("/");
+    } catch (error) {
+      //Dont do shit
+    }
+  };
+
+  return (
+    <div
+      role="button"
+      onClick={handleLogOut}
+      className="hover:bg-indigo-300 px-4 py-2 rounded-md"
+    >
+      Deconnexion
     </div>
   );
 };

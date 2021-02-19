@@ -9,12 +9,12 @@ import {
   AuthenticationResolver,
   ProductResolver,
   UserResolver,
-} from "@resolvers";
+} from "./src/resolvers";
 import { seedsDataBase } from "./src/seeds";
 import { authChecker } from "./src/utils/AutenticationChecker";
 import cors from "cors";
 import session from "express-session";
-import { CONFIG } from "@config";
+import { CONFIG } from "./config";
 import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import cookieParser from "cookie-parser";

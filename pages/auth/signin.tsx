@@ -25,7 +25,7 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="bg-blue-100 p-5 w-1/4 rounded-xl">
+      <div className="bg-indigo-300 p-5 w-1/4 rounded-xl">
         <form onSubmit={onSubmit} className="space-y-5">
           <div>
             <input
@@ -48,7 +48,7 @@ const SignIn = () => {
           <div>
             <button
               type="submit"
-              className="w-full px-2 py-3 rounded-lg bg-blue-200 flex justify-center "
+              className="w-full px-2 py-3 rounded-lg bg-indigo-400 bold text-white flex justify-center "
             >
               <div>{called && loading && <Spinner />}</div>
               <div>Se connecter</div>

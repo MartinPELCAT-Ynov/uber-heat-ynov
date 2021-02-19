@@ -1,7 +1,7 @@
-import { CircProductConfiguration } from "@entity/CircProductConfiguration";
-import { Product } from "@entity/Product";
-import { RectProductConfiguration } from "@entity/RectProductConfiguration";
-import { CreateProductInput } from "@input/ProductInput";
+import { CircProductConfiguration } from "../entity/CircProductConfiguration";
+import { Product } from "../entity/Product";
+import { RectProductConfiguration } from "../entity/RectProductConfiguration";
+import { CreateProductInput } from "../inputs/ProductInput";
 import { GraphQLUpload } from "apollo-server-express";
 import { join } from "path";
 import { createWriteStream } from "fs";

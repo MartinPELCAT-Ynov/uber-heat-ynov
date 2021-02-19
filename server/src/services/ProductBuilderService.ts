@@ -1,6 +1,6 @@
-import { CircProductConfiguration } from "@entity/CircProductConfiguration";
-import { Product } from "@entity/Product";
-import { RectProductConfiguration } from "@entity/RectProductConfiguration";
+import { CircProductConfiguration } from "../entity/CircProductConfiguration";
+import { Product } from "../entity/Product";
+import { RectProductConfiguration } from "../entity/RectProductConfiguration";
 import Joi from "joi";
 import { Service } from "typedi";
 import { getRepository } from "typeorm";
@@ -56,7 +56,7 @@ export class ProductBuilderService {
   async createnewProduct(csvRow: CSVRowType) {
     const productRepo = getRepository(Product);
     const product = productRepo.create({
-      basePrice: 600,
+      basePrice: parseFloat((Math.random() * (1300 - 500) + 500).toFixed(2)),
       name: csvRow.Article,
     });
 

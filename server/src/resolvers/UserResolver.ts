@@ -1,4 +1,4 @@
-import { User } from "@entity/User";
+import { User } from "../entity/User";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
 import { Service } from "typedi";
 import { Repository } from "typeorm";
