@@ -15,135 +15,327 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Query = {
   __typename?: "Query";
-  signIn: User;
-  getUserFromToken?: Maybe<User>;
+  Me?: Maybe<User>;
   user?: Maybe<User>;
   users: Array<User>;
-  getRoom?: Maybe<Room>;
-};
-
-export type QuerySignInArgs = {
-  user: SignInInput;
-};
-
-export type QueryGetUserFromTokenArgs = {
-  token: Scalars["String"];
+  products: Array<Product>;
 };
 
 export type QueryUserArgs = {
   userId: Scalars["String"];
 };
 
-export type QueryGetRoomArgs = {
-  roomId: Scalars["String"];
-};
-
-/** General database */
 export type User = {
   __typename?: "User";
-  _id: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  updatedAt: Scalars["DateTime"];
-  deletedAt: Scalars["DateTime"];
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  username: Scalars["String"];
-  roles?: Maybe<Array<Scalars["String"]>>;
-};
-
-export type SignInInput = {
-  username: Scalars["String"];
-  password: Scalars["String"];
-};
-
-export type Room = {
-  __typename?: "Room";
-  _id: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  updatedAt: Scalars["DateTime"];
-  deletedAt: Scalars["DateTime"];
+  id: Scalars["String"];
   name: Scalars["String"];
+  firstName: Scalars["String"];
+  email: Scalars["String"];
+  company: Scalars["String"];
+  locked: Scalars["Boolean"];
+  roles: Array<Scalars["String"]>;
+};
+
+export type Product = {
+  __typename?: "Product";
+  id: Scalars["String"];
+  name: Scalars["String"];
+  basePrice: Scalars["Float"];
+  configurations: Array<ProductConfigurationUnion>;
+};
+
+export type ProductConfigurationUnion =
+  | CircProductConfiguration
+  | RectProductConfiguration;
+
+export type CircProductConfiguration = ProductConfiguration & {
+  __typename?: "CircProductConfiguration";
+  id: Scalars["String"];
+  depth: Scalars["Float"];
+  db1: Scalars["Float"];
+  db2: Scalars["Float"];
+  db5: Scalars["Float"];
+  db10: Scalars["Float"];
+  surface: Scalars["Float"];
+  diameter: Scalars["Float"];
+};
+
+export type ProductConfiguration = {
+  id: Scalars["String"];
+  depth: Scalars["Float"];
+  db1: Scalars["Float"];
+  db2: Scalars["Float"];
+  db5: Scalars["Float"];
+  db10: Scalars["Float"];
+  surface: Scalars["Float"];
+};
+
+export type RectProductConfiguration = ProductConfiguration & {
+  __typename?: "RectProductConfiguration";
+  id: Scalars["String"];
+  depth: Scalars["Float"];
+  db1: Scalars["Float"];
+  db2: Scalars["Float"];
+  db5: Scalars["Float"];
+  db10: Scalars["Float"];
+  surface: Scalars["Float"];
+  width: Scalars["Float"];
+  height: Scalars["Float"];
+  thickness: Scalars["Float"];
 };
 
 export type Mutation = {
   __typename?: "Mutation";
   signUp: User;
+  signIn: User;
+  logout: Scalars["Boolean"];
+  addProduct: Product;
+  importProductsFromCsv: FileScalar;
 };
 
 export type MutationSignUpArgs = {
   user: SignUpInput;
 };
 
-export type SignUpInput = {
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  password: Scalars["String"];
-  username: Scalars["String"];
+export type MutationSignInArgs = {
+  user: SignInInput;
 };
 
-export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
+export type MutationAddProductArgs = {
+  data: CreateProductInput;
+};
 
-export type GetUsersQuery = { __typename?: "Query" } & {
-  users: Array<
-    { __typename?: "User" } & Pick<User, "firstName" | "lastName" | "roles">
+export type MutationImportProductsFromCsvArgs = {
+  file: Scalars["Upload"];
+};
+
+export type SignUpInput = {
+  firstName: Scalars["String"];
+  name: Scalars["String"];
+  password: Scalars["String"];
+};
+
+export type SignInInput = {
+  email: Scalars["String"];
+  password: Scalars["String"];
+};
+
+export type CreateProductInput = {
+  basePrice: Scalars["Float"];
+  name: Scalars["String"];
+  rectConfigs?: Maybe<Array<RectProductConfigurationInput>>;
+  circConfigs?: Maybe<Array<CircProductConfigurationInput>>;
+};
+
+export type RectProductConfigurationInput = {
+  depth: Scalars["Float"];
+  db1: Scalars["Float"];
+  db2: Scalars["Float"];
+  db5: Scalars["Float"];
+  db10: Scalars["Float"];
+  width: Scalars["Float"];
+  height: Scalars["Float"];
+  thickness: Scalars["Float"];
+};
+
+export type CircProductConfigurationInput = {
+  depth: Scalars["Float"];
+  db1: Scalars["Float"];
+  db2: Scalars["Float"];
+  db5: Scalars["Float"];
+  db10: Scalars["Float"];
+  diameter: Scalars["Float"];
+};
+
+export type FileScalar = {
+  __typename?: "FileScalar";
+  filename: Scalars["String"];
+  mimetype: Scalars["String"];
+  encoding: Scalars["String"];
+};
+
+export type ImportProductFromCsvMutationVariables = Exact<{
+  file: Scalars["Upload"];
+}>;
+
+export type ImportProductFromCsvMutation = { __typename?: "Mutation" } & {
+  importProductsFromCsv: { __typename?: "FileScalar" } & Pick<
+    FileScalar,
+    "filename" | "mimetype" | "encoding"
   >;
 };
 
-export const GetUsersDocument = gql`
-  query getUsers {
-    users {
-      firstName
-      lastName
-      roles
+export type SignInMutationVariables = Exact<{
+  inputs: SignInInput;
+}>;
+
+export type SignInMutation = { __typename?: "Mutation" } & {
+  signIn: { __typename?: "User" } & UserFieldsFragment;
+};
+
+export type LogOutMutationVariables = Exact<{ [key: string]: never }>;
+
+export type LogOutMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "logout"
+>;
+
+export type UserFieldsFragment = { __typename?: "User" } & Pick<
+  User,
+  "name" | "firstName" | "email" | "id"
+>;
+
+export const UserFieldsFragmentDoc = gql`
+  fragment UserFields on User {
+    name
+    firstName
+    email
+    id
+  }
+`;
+export const ImportProductFromCsvDocument = gql`
+  mutation importProductFromCsv($file: Upload!) {
+    importProductsFromCsv(file: $file) {
+      filename
+      mimetype
+      encoding
     }
   }
 `;
+export type ImportProductFromCsvMutationFn = Apollo.MutationFunction<
+  ImportProductFromCsvMutation,
+  ImportProductFromCsvMutationVariables
+>;
 
 /**
- * __useGetUsersQuery__
+ * __useImportProductFromCsvMutation__
  *
- * To run a query within a React component, call `useGetUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useImportProductFromCsvMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportProductFromCsvMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useGetUsersQuery({
+ * const [importProductFromCsvMutation, { data, loading, error }] = useImportProductFromCsvMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useImportProductFromCsvMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ImportProductFromCsvMutation,
+    ImportProductFromCsvMutationVariables
+  >
+) {
+  return Apollo.useMutation<
+    ImportProductFromCsvMutation,
+    ImportProductFromCsvMutationVariables
+  >(ImportProductFromCsvDocument, baseOptions);
+}
+export type ImportProductFromCsvMutationHookResult = ReturnType<
+  typeof useImportProductFromCsvMutation
+>;
+export type ImportProductFromCsvMutationResult = Apollo.MutationResult<ImportProductFromCsvMutation>;
+export type ImportProductFromCsvMutationOptions = Apollo.BaseMutationOptions<
+  ImportProductFromCsvMutation,
+  ImportProductFromCsvMutationVariables
+>;
+export const SignInDocument = gql`
+  mutation SignIn($inputs: SignInInput!) {
+    signIn(user: $inputs) {
+      ...UserFields
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`;
+export type SignInMutationFn = Apollo.MutationFunction<
+  SignInMutation,
+  SignInMutationVariables
+>;
+
+/**
+ * __useSignInMutation__
+ *
+ * To run a mutation, you first call `useSignInMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInMutation, { data, loading, error }] = useSignInMutation({
+ *   variables: {
+ *      inputs: // value for 'inputs'
+ *   },
+ * });
+ */
+export function useSignInMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SignInMutation,
+    SignInMutationVariables
+  >
+) {
+  return Apollo.useMutation<SignInMutation, SignInMutationVariables>(
+    SignInDocument,
+    baseOptions
+  );
+}
+export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
+export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
+export type SignInMutationOptions = Apollo.BaseMutationOptions<
+  SignInMutation,
+  SignInMutationVariables
+>;
+export const LogOutDocument = gql`
+  mutation LogOut {
+    logout
+  }
+`;
+export type LogOutMutationFn = Apollo.MutationFunction<
+  LogOutMutation,
+  LogOutMutationVariables
+>;
+
+/**
+ * __useLogOutMutation__
+ *
+ * To run a mutation, you first call `useLogOutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogOutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logOutMutation, { data, loading, error }] = useLogOutMutation({
  *   variables: {
  *   },
  * });
  */
-export function useGetUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetUsersQuery, GetUsersQueryVariables>
-) {
-  return Apollo.useQuery<GetUsersQuery, GetUsersQueryVariables>(
-    GetUsersDocument,
-    baseOptions
-  );
-}
-export function useGetUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetUsersQuery,
-    GetUsersQueryVariables
+export function useLogOutMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LogOutMutation,
+    LogOutMutationVariables
   >
 ) {
-  return Apollo.useLazyQuery<GetUsersQuery, GetUsersQueryVariables>(
-    GetUsersDocument,
+  return Apollo.useMutation<LogOutMutation, LogOutMutationVariables>(
+    LogOutDocument,
     baseOptions
   );
 }
-export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
-export type GetUsersLazyQueryHookResult = ReturnType<
-  typeof useGetUsersLazyQuery
->;
-export type GetUsersQueryResult = Apollo.QueryResult<
-  GetUsersQuery,
-  GetUsersQueryVariables
+export type LogOutMutationHookResult = ReturnType<typeof useLogOutMutation>;
+export type LogOutMutationResult = Apollo.MutationResult<LogOutMutation>;
+export type LogOutMutationOptions = Apollo.BaseMutationOptions<
+  LogOutMutation,
+  LogOutMutationVariables
 >;

@@ -1,7 +1,16 @@
-query getUsers {
-  users {
-    firstName
-    lastName
-    roles
+mutation SignIn($inputs: SignInInput!) {
+  signIn(user: $inputs) {
+    ...UserFields
   }
+}
+
+mutation LogOut {
+  logout
+}
+
+fragment UserFields on User {
+  name
+  firstName
+  email
+  id
 }

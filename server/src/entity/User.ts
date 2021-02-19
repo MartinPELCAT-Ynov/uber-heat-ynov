@@ -7,7 +7,11 @@ import {
   BeforeInsert,
   PrimaryGeneratedColumn,
   BaseEntity,
+  OneToMany,
 } from "typeorm";
+import { Lazy } from "../types/types";
+import { Project } from "./Project";
+import { UserRole } from "../enums/UserRole";
 
 @Entity()
 @ObjectType()
@@ -37,12 +41,16 @@ export class User extends BaseEntity {
   @Field()
   locked!: boolean;
 
-  @Column("character varying", { array: true, nullable: true })
+  @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
   @Field(() => [String])
-  roles?: string[];
+  role?: UserRole;
 
   @Column()
   password!: string;
+
+  @OneToMany(() => Project, (project) => project.user, { lazy: true })
+  @Field(() => [Project])
+  projects: Lazy<Project[]>;
 
   @BeforeInsert()
   async beforeInset() {

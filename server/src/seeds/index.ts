@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
-import { Product } from "@entity/Product";
-import { User } from "@entity/User";
+import { Project } from "../entity/Project";
+import { User } from "../entity/User";
+import { UserRole } from "../enums/UserRole";
 export const seedsDataBase = async () => {
   /**
    * Add Users
@@ -13,28 +14,15 @@ export const seedsDataBase = async () => {
     password: "hophop",
     company: "JonquilleLand",
     locked: false,
+    role: UserRole.ADMIN,
     email: "martin.pelcat@ynov.com",
   });
   await userRepository.save(user);
 
-  const productRepository = getRepository(Product);
-
-  const product = productRepository.create({
-    basePrice: 600,
-    rectConfigurations: [
-      {
-        db10: 10,
-        db1: 1,
-        db2: 2,
-        db5: 5,
-        depth: 123,
-        width: 1234,
-        height: 1111,
-        thickness: 2,
-      },
-    ],
-    name: "Nouveau Produit",
-  });
-
-  await productRepository.save(product);
+  const projectRepo = getRepository(Project);
+  const projects = projectRepo.create([
+    { description: "Projet 1", name: "Projet 1", user: user },
+    { description: "Projet 2", name: "Projet 2", user: user },
+  ]);
+  projectRepo.save(projects);
 };

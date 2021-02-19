@@ -4,9 +4,11 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { SignInInput, SignUpInput } from "../inputs/User";
 import { ContextType } from "../types/ContextType";
-import { User } from "@entity/User";
+import { User } from "../entity/User";
+import { Service } from "typedi";
 
 @Resolver()
+@Service()
 export class AuthenticationResolver {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>
@@ -27,15 +29,16 @@ export class AuthenticationResolver {
     return await user.save();
   }
 
-  @Query(() => User)
+  @Mutation(() => User)
   async signIn(
-    @Arg("user") { password, username }: SignInInput,
+    @Arg("user") { password, email }: SignInInput,
     @Ctx() { req }: ContextType
   ): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { username } });
+    const user = await this.userRepository.findOne({ where: { email } });
     if (user) {
       const match = await compare(password, user.password);
       if (match) {
+        delete user.password;
         req.session.user = user;
         return user;
       }
@@ -45,10 +48,21 @@ export class AuthenticationResolver {
     }
   }
 
-  @Query(() => User, { nullable: true })
-  async getUserFromToken(@Arg("token", () => String) token: string) {
-    return await this.userRepository.findOne({
-      where: { token },
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { req }: ContextType): Promise<boolean> {
+    return await new Promise((res, rej) => {
+      try {
+        req.session.destroy(() => {
+          res(true);
+        });
+      } catch (error) {
+        rej(error);
+      }
     });
+  }
+
+  @Query(() => User, { nullable: true })
+  async Me(@Ctx() { req }: ContextType) {
+    return await this.userRepository.findOne(req.session.user.id);
   }
 }

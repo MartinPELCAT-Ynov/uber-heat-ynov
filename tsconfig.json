@@ -5,6 +5,7 @@
     "jsx": "preserve",
     "lib": ["dom", "es2017"],
     "baseUrl": ".",
+    "outDir": "dist",
     "moduleResolution": "node",
     "strict": false,
     "allowJs": true,
@@ -26,12 +27,7 @@
       "@components/*": ["components/*"],
       "@contexts/*": ["context/*"],
       "@icons/*": ["icons/*"],
-      "@generated": ["apollo/__generated__/"],
-      "@config": ["server/config"],
-      "@entity/*": ["server/src/entity/*"],
-      "@resolvers": ["server/src/resolvers"],
-      "@input/*": ["server/src/inputs/*"],
-      "@middlewares/*": ["middlewares/*"]
+      "@generated": ["apollo/__generated__/"]
     }
   },
   "exclude": ["dist", ".next", "out", "next.config.js"],

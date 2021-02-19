@@ -9,12 +9,13 @@ import {
   AuthenticationResolver,
   ProductResolver,
   UserResolver,
-} from "@resolvers";
+  ResulResolver,
+} from "./src/resolvers";
 import { seedsDataBase } from "./src/seeds";
 import { authChecker } from "./src/utils/AutenticationChecker";
 import cors from "cors";
 import session from "express-session";
-import { CONFIG } from "@config";
+import { CONFIG } from "./config";
 import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import cookieParser from "cookie-parser";
@@ -43,7 +44,12 @@ export const server = async () => {
      * Typegraphql setup
      */
     const schema = await buildSchema({
-      resolvers: [AuthenticationResolver, UserResolver, ProductResolver],
+      resolvers: [
+        AuthenticationResolver,
+        UserResolver,
+        ProductResolver,
+        ResulResolver,
+      ],
       container: Container,
       authChecker,
     });
@@ -61,13 +67,19 @@ export const server = async () => {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           maxAge: 4.32e8,
+          sameSite: true,
         },
       })
     );
 
     const apollo = new ApolloServer({
       schema,
-      playground: { settings: { "request.credentials": "same-origin" } }, // to test with cookie in playground
+      playground: {
+        settings: {
+          "request.credentials": "same-origin",
+          "editor.theme": "light",
+        },
+      }, // to test with cookie in playground
       context: async ({ req, res }) => ({ res, req }),
     });
     apollo.applyMiddleware({ path: "/api/gql", app, cors: false });

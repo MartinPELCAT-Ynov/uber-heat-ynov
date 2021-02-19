@@ -1,5 +1,8 @@
+import { ProductConfiguration } from "apollo/__generated__";
 import { Field, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Lazy } from "../types/types";
+import { Project } from "./Project";
 
 @Entity()
 @ObjectType()
@@ -8,9 +11,9 @@ export class Result {
   @Field()
   id: string;
 
-  @Field()
-  project: string;
+  @ManyToOne(() => Project)
+  @Field(() => Project)
+  project: Lazy<Project>;
 
-  @Field()
-  configuration: string;
+  configuration: Lazy<ProductConfiguration>;
 }
