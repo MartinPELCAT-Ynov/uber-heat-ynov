@@ -12,16 +12,13 @@ import {
   ResulResolver,
 } from "./src/resolvers";
 import { seedsDataBase } from "./src/seeds";
-import { authChecker } from "./src/utils/AutenticationChecker";
+import { authChecker } from "./src/utils/AuthorizedChecker";
 import cors from "cors";
 import session from "express-session";
 import { CONFIG } from "./config";
 import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import cookieParser from "cookie-parser";
-import { createServer } from "spdy";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 const nextApp = next({ dev: true });
 const handler = nextApp.getRequestHandler();
@@ -91,24 +88,10 @@ export const server = async () => {
       handler(req, res);
     }); // use page folder
 
-    console.log(join(__dirname, "../cert.pem"));
-
-    createServer(
-      {
-        key: readFileSync(join(__dirname, "../privateKey.key")),
-        cert: readFileSync(join(__dirname, "../certificate.crt")),
-      },
-      app
-    ).listen(PORT, () => {
+    app.listen({ port: PORT }, () => {
       console.log(`🚀 http://localhost:${PORT}`);
       console.log(`🚀 http://localhost:${PORT}${apollo.graphqlPath}`);
       console.log(`🚀 ws://localhost:${PORT}${apollo.subscriptionsPath}`);
     });
-
-    // app.listen({ port: PORT }, () => {
-    //   console.log(`🚀 http://localhost:${PORT}`);
-    //   console.log(`🚀 http://localhost:${PORT}${apollo.graphqlPath}`);
-    //   console.log(`🚀 ws://localhost:${PORT}${apollo.subscriptionsPath}`);
-    // });
   });
 };

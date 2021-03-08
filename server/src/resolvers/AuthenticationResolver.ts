@@ -1,5 +1,5 @@
 import { compare } from "bcrypt";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { SignInInput, SignUpInput } from "../inputs/User";
@@ -49,6 +49,7 @@ export class AuthenticationResolver {
   }
 
   @Mutation(() => Boolean)
+  @Authorized()
   async logout(@Ctx() { req }: ContextType): Promise<boolean> {
     return await new Promise((res, rej) => {
       try {
