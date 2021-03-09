@@ -7,8 +7,12 @@ import {
   Arg,
 } from "type-graphql";
 import { Project } from "../entity/Project";
+import { ContextType } from "../types/ContextType";
 
-const ownProduct: MiddlewareFn<any> = async ({ context, args }, next) => {
+const ownProduct: MiddlewareFn<ContextType> = async (
+  { context, args },
+  next
+) => {
   const user = context.req.session.user;
   if (!user) throw new UnauthorizedError();
 
