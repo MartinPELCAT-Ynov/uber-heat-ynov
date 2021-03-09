@@ -1,12 +1,12 @@
 import { ProductConfiguration } from "apollo/__generated__";
 import { Field, ObjectType } from "type-graphql";
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Lazy } from "../types/types";
 import { Project } from "./Project";
 
 @Entity()
 @ObjectType()
-export class Result {
+export class Result extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   @Field()
   id: string;

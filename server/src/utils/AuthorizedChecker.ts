@@ -7,6 +7,7 @@ export const authChecker: AuthChecker<ContextType> = async (
 ) => {
   const user = context.req.session.user;
   if (!user) return false;
+  if (!roles) return true;
 
   if (roles && roles.includes(user.role)) return true;
 

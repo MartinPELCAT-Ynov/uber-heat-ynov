@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "type-graphql";
 import {
+  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -12,7 +13,7 @@ import { User } from "./User";
 
 @Entity()
 @ObjectType()
-export class Project {
+export class Project extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   @Field()
   id: string;

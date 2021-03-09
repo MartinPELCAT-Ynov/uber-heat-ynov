@@ -1,12 +1,31 @@
-import { FieldResolver, Resolver, Root } from "type-graphql";
-import { Result } from "../entity/Result";
-import { ProductConfigurationUnion } from "../unions/ProductConfigurationUnion";
+import {
+  Resolver,
+  UseMiddleware,
+  MiddlewareFn,
+  UnauthorizedError,
+  Query,
+  Arg,
+} from "type-graphql";
+import { Project } from "../entity/Project";
 
-@Resolver(() => Result)
+const ownProduct: MiddlewareFn<any> = async ({ context, args }, next) => {
+  const user = context.req.session.user;
+  if (!user) throw new UnauthorizedError();
+
+  const result = await Project.findOne(args.resultId, {
+    where: {
+      user,
+    },
+  });
+  if (result) await next();
+};
+
+@Resolver(() => Project)
 export class ResulResolver {
-  @FieldResolver(() => ProductConfigurationUnion)
-  async configurations(@Root() { id }: Result) {
-    console.log(id);
+  @Query(() => Project, { nullable: true })
+  @UseMiddleware(ownProduct)
+  async getResult(@Arg("resultId") resultId: string) {
+    console.log(resultId);
 
     return null;
   }
