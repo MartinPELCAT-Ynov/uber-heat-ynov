@@ -8,7 +8,7 @@
   "synchronize": true,
   "logging": "all",
   "cache": true,
-  "dropSchema": "true",
+  "dropSchema": true,
   "logger": "file",
   "entities": ["server/src/entity/**/*.{ts,js}"],
   "migrations": ["server/src/migration/**/*.{ts,js}"],
