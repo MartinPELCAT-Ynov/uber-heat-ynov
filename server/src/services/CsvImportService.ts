@@ -25,8 +25,8 @@ export class CsvImportService {
           res(true);
         })
         .on("error", (error) => {
-          rej();
           console.log("Import Failed", error);
+          rej();
         });
     });
   }

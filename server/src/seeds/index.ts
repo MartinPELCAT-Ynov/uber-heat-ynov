@@ -24,5 +24,5 @@ export const seedsDataBase = async () => {
     { description: "Projet 1", name: "Projet 1", user: user },
     { description: "Projet 2", name: "Projet 2", user: user },
   ]);
-  projectRepo.save(projects);
+  await projectRepo.save(projects);
 };

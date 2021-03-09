@@ -30,7 +30,7 @@ export abstract class ProductConfiguration
   @Field()
   db10: number;
 
-  @Field()
+  @Field(() => Number)
   surface(): number {
     throw new Error("Method not implemented!");
   }

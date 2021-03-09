@@ -7,7 +7,6 @@ import {
   Entity,
 } from "typeorm";
 import { Lazy } from "../types/types";
-// import { ProductConfigurationUnionType } from "../unions/ProductConfigurationUnion";
 import { CircProductConfiguration } from "./CircProductConfiguration";
 import { RectProductConfiguration } from "./RectProductConfiguration";
 

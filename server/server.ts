@@ -81,6 +81,7 @@ export const server = async () => {
           "editor.theme": "light",
         },
       }, // to test with cookie in playground
+      formatError: (error) => ({ message: error.message }),
       context: async ({ req, res }) => ({ res, req }),
     });
     apollo.applyMiddleware({ path: "/api/gql", app, cors: false });
